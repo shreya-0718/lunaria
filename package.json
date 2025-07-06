@@ -1,0 +1,24 @@
+{
+  "name": "lunaria",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shreya-0718/lunaria.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shreya-0718/lunaria/issues"
+  },
+  "homepage": "https://github.com/shreya-0718/lunaria#readme",
+  "description": "",
+  "devDependencies": {
+    "electron": "^37.2.0"
+  }
+}

@@ -1,0 +1,7 @@
+To-do List:
+- intro animation
+- api to import date
+- api to import moon phase
+- random quotes gen (for moon phase + footer both)
+- different color modes, icon 
+- sound effect controller (hover opens panel, click mutes/unmutes)

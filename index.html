@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Lunaria</title>
+  <link rel="icon" href="assets/shooting_star.png" type="image/png" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Lunaria: a journal in the stars ✨</h1>
+  </header>
+
+  <main>
+
+  <div id="intro">
+    <div class="title">
+      <strong>
+        Lunar<span class="i-wrapper">
+          <span class="i-body">ı</span>
+          <span id="i-dot-target" class="i-dot-placeholder"></span>
+        </span>a
+      </strong>
+    </div>
+    <div class="subtitle">your journal in the stars</div>
+
+    <div class="star" id="star"></div>
+  </div>
+
+  <div id="main-app" style="display: none;">
+    <div class="container">
+      <aside class="sidebar">
+        <h2>🌔 Waxing Gibbous</h2>
+        <p><strong>Dates:</strong> July 15-18</p>
+        <p><strong>Theme:</strong> Refinement & Momentum</p>
+        <p> Polish your ideas. Revisit unfinished work.</p>
+        <p><strong>Affirmation:</strong><br>“I am capable of balance.”</p>
+        <button id="view-cycle">View Full Cycle  ⟳</button>
+      </aside>
+
+      <section class="journal">
+        <h2>Prompt</h2>
+        <p>“What are you refining?”</p>
+
+        <h3>Your Entry</h3>
+        <textarea rows="14" cols="60" placeholder="Write your thoughts here..."></textarea>
+
+        <div class="buttons">
+          <button id="save">Save</button>
+          <button id="export">Export</button>
+        </div>
+      </section>
+    </div>
+  </div>
+  </main>
+
+  <footer>
+    <p>Today is July 16 • Waxing Gibbous • "Slow and Steady ✨"
+    </p>
+  </footer>
+
+  <script src="renderer.js"></script>
+</body>
+</html>
