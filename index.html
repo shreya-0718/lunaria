@@ -3,12 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <title>Lunaria</title>
-  <link rel="icon" href="assets/shooting_star.png" type="image/png" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
-    <h1>Lunaria: a journal in the stars ✨</h1>
+    <h1>
+      <div class="side-by-side">
+        Lunaria: a journal in the stars <div class="sparkle-icon">✨</div>
+      </div>
+    </h1>
   </header>
 
   <main>
@@ -30,7 +33,12 @@
   <div id="main-app" style="display: none;">
     <div class="container">
       <aside class="sidebar">
-        <h2>🌔 Waxing Gibbous</h2>
+        <h2>
+          <div class="side-by-side">
+            <div id="moon-icon" class="moon-icon">🌑</div>
+            <div id="moon-label" class="moon-label">Loading...</div>
+          </div> 
+        </h2>
         <p><strong>Dates:</strong> July 15-18</p>
         <p><strong>Theme:</strong> Refinement & Momentum</p>
         <p> Polish your ideas. Revisit unfinished work.</p>
@@ -55,10 +63,14 @@
   </main>
 
   <footer>
-    <p>Today is July 16 • Waxing Gibbous • "Slow and Steady ✨"
+    <p>
+      <div id="date-display" class="footer-date"></div> 
+      <div class="side-by-side">
+        <div id="moon-phase">Loading...</div> • "Slow and Steady"
+      </div>
     </p>
   </footer>
 
-  <script src="renderer.js"></script>
+  <script type="module" src="renderer.js"></script>
 </body>
 </html>

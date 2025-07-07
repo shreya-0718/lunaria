@@ -1,3 +1,4 @@
+// Intro star animation
 window.addEventListener('DOMContentLoaded', () => {
   const star = document.getElementById('star');
   const dotTarget = document.getElementById('i-dot-target');
@@ -39,13 +40,50 @@ window.addEventListener('DOMContentLoaded', () => {
         intro.style.display = 'none';
         mainApp.style.display = 'block';
         document.body.style.overflowY = 'auto';
-      }, 4000);
+      }, 3000);
     }
   }
 
   // Start spiral after title fades in
-setTimeout(() => {
-    star.style.position = 'absolute';
-    animateSpiral();
-  }, 1500);
+  setTimeout(() => {
+      star.style.position = 'absolute';
+      animateSpiral();
+    }, 1500);
+  });
+
+// Display today's date
+const today = new Date();
+const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+const formattedDate = today.toLocaleDateString(undefined, options);
+
+document.getElementById('date-display').textContent = formattedDate;
+
+
+document.addEventListener('DOMContentLoaded', async () => {
+  console.log("📦 renderer.js loaded");
+
+  if (!window.lunar) {
+    console.error("🚫 window.lunar is undefined");
+    return;
+  }
+
+  const { phase, emoji } = await window.lunar.getPhase();
+
+  // side bar shows emoji + phase
+  const moonIcon = document.getElementById('moon-icon');
+  const moonLabel = document.getElementById('moon-label');
+
+  if (moonIcon && moonLabel) {
+    moonIcon.textContent = emoji;
+    moonLabel.textContent = phase;
+  }
+
+  // footer only shows phase
+  const moonFooter = document.getElementById('moon-phase');
+  if (moonFooter) {
+    moonFooter.textContent = `${phase}`;
+    console.log("Footer:" + moonFooter.textContent);
+  } else {
+    console.error("🚫 #moon-phase element not found");
+  }
 });

@@ -20,5 +20,8 @@
   "description": "",
   "devDependencies": {
     "electron": "^37.2.0"
+  },
+  "dependencies": {
+    "lunarphase-js": "^2.0.3"
   }
 }
