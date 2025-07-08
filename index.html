@@ -17,7 +17,7 @@
   <main>
 
   <div id="intro">
-    <div class="title">
+    <div class="title" id="title-text">
       <strong>
         Lunar<span class="i-wrapper">
           <span class="i-body">ı</span>
@@ -25,7 +25,7 @@
         </span>a
       </strong>
     </div>
-    <div class="subtitle">your journal in the stars</div>
+    <div class="subtitle" id="subtitle-text">your journal in the stars</div>
 
     <div class="star" id="star"></div>
   </div>
@@ -60,6 +60,21 @@
       </section>
     </div>
   </div>
+
+  <div id="cycle-view" class="hidden">
+    <div class="cycle-header">
+    <button id="back-to-main">← Back</button>
+    <button id="prev-cycle">←</button>
+    <div id="cycle-range">June 6 – July 5</div>
+    <button id="next-cycle">→</button>
+  </div>
+
+    <div id="moon-ring">
+      <div id="cycle-range" class="cycle-center-label"></div>
+      <!-- 8 moon phases will be injected here -->
+    </div>
+
+    <div id="phase-detai
   </main>
 
   <footer>

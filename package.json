@@ -22,6 +22,7 @@
     "electron": "^37.2.0"
   },
   "dependencies": {
-    "lunarphase-js": "^2.0.3"
+    "lunarphase-js": "^2.0.3",
+    "react-draggable": "^4.5.0"
   }
 }

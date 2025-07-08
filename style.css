@@ -15,6 +15,7 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 9999;
+  pointer-events: none;
   background-color: #0e0e1a;
   transition: opacity 1s ease;
 }
@@ -60,6 +61,7 @@ body {
   background: gold;
   border-radius: 50%;
   position: absolute;
+  pointer-events: none;
   top: 50%;
   left: 110%;
   transform: translate(-50%, -50%);
@@ -76,12 +78,55 @@ body {
   to   { box-shadow: 0 0 15px gold; }
 }
 
+.glow-flash {
+  animation: titleGlow 2s ease-in-out;
+}
+
+@keyframes titleGlow {
+  0% {
+    text-shadow: none;
+    opacity: 1;
+  }
+  50% {
+    text-shadow: 0 0 10px #fff, 0 0 20px gold, 0 0 30px goldenrod;
+    color: #fff;
+    opacity: 1;
+  }
+  100% {
+    text-shadow: none;
+    opacity: 1;
+  }
+}
+
+body[data-theme="new-moon"] {
+  background: #0a0a0a;
+  color: #ccc;
+}
+
+body[data-theme="full-moon"] {
+  background: #f0f0f0;
+  color: #222;
+}
+
+body[data-theme="nebula"] {
+  background: radial-gradient(ellipse at center, #1a0033, #000);
+  color: #e0d7ff;
+}
+
+.theme-option.selected {
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  font-weight: bold;
+  color: #fff;
+}
+
 body {
   font-family: 'Georgia', serif;
-  background-color: #0e0e1a;
-  color: #f0f0f0;
+  /* background-color: #0e0e1a; 
+  color: #f0f0f0; */
   margin: 0;
   padding: 0;
+  overflow-y: auto;
 }
 
 header, footer {
@@ -135,10 +180,13 @@ button {
   padding: 0.5rem 1rem;
   margin-right: 0.5rem;
   cursor: pointer;
+  position: relative;
+  z-index: 100;
 }
 
 button:hover {
   background-color: #57577a;
+  color: white;
 }
 
 .side-by-side {
@@ -152,16 +200,169 @@ button:hover {
 .sparkle-icon {
   font-size: 2rem;
   animation: glow 2.5s ease-in-out infinite;
-}
+} 
 
 @keyframes glow {
   0%, 100% {
-    text-shadow: 0 0 5px #fff, 0 0 10px #ffdd00, 0 0 15px #ffdd00;
+    text-shadow: 0 0 5px #fff, 0 0 10px #ffa500, 0 0 15px #ffa500;
     transform: scale(1);
   }
 
   50% {
-    text-shadow: 0 0 10px #fff, 0 0 20px #ffdd00, 0 0 30px #ffdd00;
+    text-shadow: 0 0 10px #fff, 0 0 20px #ffa500, 0 0 30px #ffa500;
     transform: scale(1.1);
   }
+}
+
+.control-panel {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.5rem;
+  z-index: 1000;
+}
+
+.control-button {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #ccc;
+}
+
+.panel {
+  background: rgba(30, 30, 40, 0.95);
+  border: 1px solid #555;
+  border-radius: 8px;
+  padding: 0.75rem;
+  font-size: 0.9rem;
+  color: #eee;
+  box-shadow: 0 0 10px rgba(0,0,0,0.4);
+}
+
+.panel label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.theme-option {
+  display: block;
+  background: none;
+  border: 1px solid #666;
+  color: #eee;
+  padding: 0.4rem 0.6rem;
+  margin-bottom: 0.4rem;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.theme-option:hover {
+  background: #444;
+}
+
+#cycle-view {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.hidden {
+  display: none;
+}
+
+.cycle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+textarea#cycle-entry {
+  width: 85%;
+  height: 200px;
+  resize: none;
+  background: #111;
+  color: #eee;
+  border: 1px solid #444;
+  padding: 1rem;
+  font-family: monospace;
+}
+
+#cycle-view {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background: #1a1a2e;
+  display: none; /* hidden by default */
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+#cycle-view.active {
+  display: block;
+}
+
+#cycle-view.active {
+  display: block;
+}
+
+#main-app {
+  display: block;
+}
+
+#main-app.hidden {
+  display: none;
+}
+
+#main-app, #cycle-view {
+  transition: opacity 0.4s ease;
+}
+
+#cycle-date {
+  margin-right: 20px;
+}
+
+/* moon phases section */
+
+.moon-phase.current {
+  box-shadow: 0 0 15px 5px gold;
+  background: #fff;
+}
+
+.mini-moons {
+  position: relative;
+  width: 300px;
+  height: 150px;
+  margin: 2rem auto;
+}
+
+.mini-moon {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #222;
+  border: 1px solid #555;
+  transition: transform 0.2s ease;
+}
+
+.mini-moon.glow {
+  background: #fff;
+  box-shadow: 0 0 10px 3px #88f;
+}
+
+.cycle-center-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ccc;
+  font-size: 1rem;
+  text-align: center;
 }
