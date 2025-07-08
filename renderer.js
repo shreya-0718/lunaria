@@ -1,3 +1,4 @@
+
 // Intro star animation
 window.addEventListener('DOMContentLoaded', () => {
   const star = document.getElementById('star');
@@ -64,7 +65,7 @@ window.addEventListener('DOMContentLoaded', () => {
     }, 1500);
   });
 
-  
+
 // Display today's date
 const today = new Date();
 const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -102,6 +103,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 });
 
+/*
 // control panel stuff
 document.addEventListener('DOMContentLoaded', () => {
   const soundToggle = document.getElementById('sound-toggle');
@@ -158,102 +160,130 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 });
 });
-
+*/
 
 // moon cycle shows
-async function fetchLunarCycle(year, month) {
-  const res = await fetch(`https://moon-api.com/api/moonphases?year=${year}&month=${month}&lat=33.2&lng=-96.6`, {
-    headers: {
-      'X-RapidAPI-Key': 'YOUR_API_KEY',
-      'X-RapidAPI-Host': 'moon-api.com'
-    }
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const today = new Date();
+  const rawDays = await window.lunar.getCycle(today.toISOString());
+
+  const days = rawDays.map(day => ({
+    ...day,
+    hasEntry: !!localStorage.getItem(`entry-${day.date}`),
+    entry: localStorage.getItem(`entry-${day.date}`) || ""
+  }));
+
+  const phases = groupByPhase(days);
+  renderMoonRing(phases);
+
+  document.getElementById('view-cycle').addEventListener('click', () => {
+    document.getElementById('main-app').classList.add('hidden');
+    document.getElementById('cycle-view').classList.add('active');
   });
 
-  const data = await res.json();
-  return structureLunarCycle(data);
-}
+  document.getElementById('back-to-main').addEventListener('click', () => {
+    document.getElementById('cycle-view').classList.remove('active');
+    document.getElementById('main-app').classList.remove('hidden');
+  });
+});
 
-function structureLunarCycle(apiData) {
-  const phases = ["New Moon", "Waxing Crescent", "First Quarter", "Waxing Gibbous", "Full Moon", "Waning Gibbous", "Last Quarter", "Waning Crescent"];
-  const grouped = [];
-
-  for (let i = 0; i < phases.length; i++) {
-    const start = new Date(apiData[i].date);
-    const end = new Date(apiData[i + 1]?.date || start);
-    const days = [];
-
-    for (let d = new Date(start); d <= end; d.setDate(d.getDate() + 1)) {
-      const key = d.toISOString().split('T')[0];
-      days.push({
-        date: key,
-        hasEntry: !!localStorage.getItem(`entry-${key}`),
-        entry: localStorage.getItem(`entry-${key}`) || ""
-      });
-    }
-
-    grouped.push({
-      name: apiData[i].phase,
-      start: start.toDateString(),
-      end: end.toDateString(),
-      isCurrent: isTodayInRange(start, end),
-      days
+function generateLunarCycle(startDate = new Date()) {
+  const days = [];
+  for (let i = 0; i < 30; i++) {
+    const date = new Date(startDate);
+    date.setDate(date.getDate() + i);
+    const key = date.toISOString().split('T')[0];
+    days.push({
+      date: key,
+      phase: Moon.lunarPhase(date),
+      emoji: Moon.lunarPhaseEmoji(date),
+      age: Moon.lunarAge(date),
+      hasEntry: !!localStorage.getItem(`entry-${key}`),
+      entry: localStorage.getItem(`entry-${key}`) || ""
     });
   }
-
-  return {
-    start: new Date(apiData[0].date).toDateString(),
-    end: new Date(apiData[apiData.length - 1].date).toDateString(),
-    phases: grouped
-  };
+  return days;
 }
 
-function isTodayInRange(start, end) {
-  const today = new Date();
-  return today >= start && today <= end;
-}
-
-let currentCycleIndex = 0;
-
-function updateCycleView() {
-  const cycle = lunarCycles[currentCycleIndex]; // precomputed array of cycles
-  document.getElementById('cycle-range').textContent = `${cycle.start} – ${cycle.end}`;
-  renderMoonRing(cycle.phases);
+function groupByPhase(days) {
+  const phaseMap = {};
+  days.forEach(day => {
+    if (!phaseMap[day.phase]) {
+      phaseMap[day.phase] = {
+        name: day.phase,
+        emoji: day.emoji,
+        days: []
+      };
+    }
+    phaseMap[day.phase].days.push(day);
+  });
+  return Object.values(phaseMap);
 }
 
 function renderMoonRing(phases) {
   const ring = document.getElementById('moon-ring');
   ring.innerHTML = '';
+
+  const centerLabel = document.createElement('div');
+  centerLabel.id = 'cycle-range';
+  centerLabel.className = 'cycle-center-label';
+  centerLabel.textContent = `${phases[0].days[0].date} – ${phases.at(-1).days.at(-1).date}`;
+  ring.appendChild(centerLabel);
+
   const radius = 150;
   const center = 200;
 
   phases.forEach((phase, i) => {
-    const angle = (i / phases.length) * 2 * Math.PI;
+    const angle = (i / phases.length) * 2 * Math.PI - Math.PI/2;
     const x = center + radius * Math.cos(angle) - 25;
     const y = center + radius * Math.sin(angle) - 25;
 
     const moon = document.createElement('div');
     moon.className = 'moon-phase';
-    if (phase.isCurrent) moon.classList.add('current');
+    moon.textContent = phase.emoji;
     moon.style.left = `${x}px`;
     moon.style.top = `${y}px`;
     moon.title = phase.name;
 
-    moon.onclick = () => showPhaseDetails(phase);
+    if (phase.days.some(d => isToday(d.date))) {
+      moon.classList.add('current');
+    }
+
+    moon.onclick = () => showPhaseDetails(phase, x + 25, y + 25, angle);
     ring.appendChild(moon);
+
+    const label = document.createElement('div');
+    label.className = 'phase-label';
+    label.textContent = `${phase.days[0].date} – ${phase.days.at(-1).date}`;
+    label.style.position = 'absolute';
+    label.style.left = `${x}px`;
+    label.style.top = `${y + 60}px`;
+    label.style.width = '100px';
+    label.style.textAlign = 'center';
+    label.style.transform = 'translateX(-25%)';
+    label.style.color = '#aaa';
+    ring.appendChild(label);
   });
 }
 
-function showPhaseDetails(phase) {
+function showPhaseDetails(phase, originX, originY, angleFromCenter) {
   const container = document.querySelector('.mini-moons');
   container.innerHTML = '';
-  const radius = 100;
-  const centerX = 150;
-  const centerY = 150;
+  container.style.position = 'absolute';
+  container.style.left = '0';
+  container.style.top = '0';
+
+  const radius = 80;
+  const baseAngle = angleFromCenter; // angle from center to clicked moon
 
   phase.days.forEach((day, i, arr) => {
-    const angle = Math.PI * (i / (arr.length - 1)); // semi-circle
-    const x = centerX + radius * Math.cos(angle) - 15;
-    const y = centerY + radius * Math.sin(angle) - 15;
+    const spread = Math.PI; // 180° arc
+    const offset = spread * (i / (arr.length - 1)) - spread / 2;
+    const angle = baseAngle + offset;
+
+    const x = originX + radius * Math.cos(angle) ;
+    const y = originY + radius * Math.sin(angle) ;
 
     const mini = document.createElement('div');
     mini.className = 'mini-moon';
@@ -270,40 +300,11 @@ function showPhaseDetails(phase) {
     container.appendChild(mini);
   });
 
-  document.querySelector('.phase-dates').textContent = `${phase.start} – ${phase.end}`;
+  document.querySelector('.phase-dates').textContent = `${phase.days[0].date} – ${phase.days.at(-1).date}`;
   document.getElementById('phase-details').classList.remove('hidden');
 }
 
-let lunarCycles = [];
-
-document.addEventListener('DOMContentLoaded', async () => {
-  const today = new Date();
-  const cycle = await fetchLunarCycle(today.getFullYear(), today.getMonth() + 1);
-  lunarCycles.push(cycle);
-  updateCycleView();
-
-  document.getElementById('prev-phase').onclick = () => {
-    if (currentCycleIndex > 0) {
-      currentCycleIndex -= 1;
-      updateCycleView();
-    }
-  };
-
-  document.getElementById('next-phase').onclick = () => {
-    if (currentCycleIndex < lunarCycles.length - 1) {
-      currentCycleIndex += 1;
-      updateCycleView();
-    }
-  };
-
-  document.getElementById('view-cycle').addEventListener('click', () => {
-    document.getElementById('main-app').classList.add('hidden');
-    document.getElementById('cycle-view').classList.add('active');
-    updateCycleView();
-  });
-
-  document.getElementById('back-to-main').addEventListener('click', () => {
-    document.getElementById('cycle-view').classList.remove('active');
-    document.getElementById('main-app').classList.remove('hidden');
-  });
-});
+function isToday(dateStr) {
+  const today = new Date().toISOString().split('T')[0];
+  return dateStr === today;
+}

@@ -61,20 +61,25 @@
     </div>
   </div>
 
-  <div id="cycle-view" class="hidden">
-    <div class="cycle-header">
-    <button id="back-to-main">← Back</button>
-    <button id="prev-cycle">←</button>
-    <div id="cycle-range">June 6 – July 5</div>
-    <button id="next-cycle">→</button>
-  </div>
+  <!-- 🌙 Lunar Cycle View -->
 
+  <div id="cycle-view" class="hidden">
+    <button id="back-to-main">← Back</button>
     <div id="moon-ring">
-      <div id="cycle-range" class="cycle-center-label"></div>
-      <!-- 8 moon phases will be injected here -->
+      <div id="cycle-range" class="cycle-center-label"> hihihii</div>
     </div>
 
-    <div id="phase-detai
+    <div id="phase-details" class="hidden">
+      <div class="mini-moons"></div>
+      <div class="phase-dates">Phase Dates</div>
+    </div>
+
+    <div class="entry-display">
+      <h2 id="entry-date">Select a day</h2>
+      <textarea id="entry-text" readonly></textarea>
+    </div>
+  </div>
+
   </main>
 
   <footer>

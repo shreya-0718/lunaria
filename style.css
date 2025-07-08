@@ -308,10 +308,6 @@ textarea#cycle-entry {
   display: block;
 }
 
-#cycle-view.active {
-  display: block;
-}
-
 #main-app {
   display: block;
 }
@@ -329,17 +325,67 @@ textarea#cycle-entry {
 }
 
 /* moon phases section */
-
-.moon-phase.current {
-  box-shadow: 0 0 15px 5px gold;
-  background: #fff;
+/* 🌕 Cycle View Container */
+#cycle-view {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: radial-gradient(circle at center, #0a0a0a, #000);
+  color: white;
+  z-index: 9999;
+  display: none;
+  padding: 2rem;
+  box-sizing: border-box;
+  overflow-y: auto;
 }
 
+#cycle-view.active {
+  display: block;
+}
+
+/* 🌗 Moon Ring Layout */
+#moon-ring {
+  position: relative;
+  width: 400px;
+  height: 400px;
+  margin: 2rem auto;
+  border-radius: 50%;
+}
+
+/* 🌑 Moon Phase Buttons */
+.moon-phase {
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #222;
+  border: 2px solid #fff;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+.moon-phase:hover {
+  transform: scale(1.2);
+  background: gold;
+}
+
+.moon-phase.current {
+  background: #fff;
+  box-shadow: 0 0 15px 5px gold;
+}
+
+/* 🌘 Mini Moons */
 .mini-moons {
   position: relative;
   width: 300px;
   height: 150px;
-  margin: 2rem auto;
+  margin: 0 auto 1rem;
 }
 
 .mini-moon {
@@ -357,12 +403,76 @@ textarea#cycle-entry {
   box-shadow: 0 0 10px 3px #88f;
 }
 
+.mini-moon:hover {
+  transform: scale(1.1);
+}
+
+/* 📅 Phase Dates */
+.phase-dates {
+  color: #aaa;
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+/* 📖 Entry Display */
+.entry-display {
+  text-align: center;
+  margin-top: 2rem;
+}
+
+#entry-date {
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+#entry-text {
+  width: 80%;
+  height: 150px;
+  background: #111;
+  color: #eee;
+  border: 1px solid #444;
+  padding: 1rem;
+  font-family: monospace;
+  resize: none;
+}
+
+/* 🧭 Navigation Buttons */
+button {
+  background: #222;
+  color: #eee;
+  border: 1px solid #555;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background: #444;
+}
+
+.hidden {
+  display: none;
+}
+
 .cycle-center-label {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  z-index: 9999;
   color: #ccc;
   font-size: 1rem;
   text-align: center;
+  pointer-events: none;
+}
+
+.mini-moon {
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #222;
+  border: 1px solid #555;
+  transform: translate(-50%, -50%);
 }

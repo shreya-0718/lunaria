@@ -20,7 +20,26 @@ app.whenReady().then(() => {
   createWindow();
 });
 
-// 🌓 Handle moon phase request from renderer
+// 🌕 Handle request for a full lunar cycle
+ipcMain.handle('get-lunar-cycle', (event, startDateStr) => {
+  const startDate = new Date(startDateStr);
+  const days = [];
+
+  for (let i = 0; i < 30; i++) {
+    const date = new Date(startDate);
+    date.setDate(date.getDate() + i);
+    const key = date.toISOString().split('T')[0];
+    days.push({
+      date: key,
+      phase: Moon.lunarPhase(date),
+      emoji: Moon.lunarPhaseEmoji(date),
+      age: Moon.lunarAge(date),
+    });
+  }
+
+  return days;
+});
+
 ipcMain.handle('get-moon-phase', () => {
   return {
     phase: Moon.lunarPhase(),
