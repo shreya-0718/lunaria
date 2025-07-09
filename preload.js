@@ -13,4 +13,12 @@ contextBridge.exposeInMainWorld('lunar', {
   } 
 });
 
+contextBridge.exposeInMainWorld('journalAPI', {
+  save: (date, content) => ipcRenderer.invoke('save-entry', date, content),
+  load: () => ipcRenderer.invoke('load-entries'),
+  openEntry: (content) => ipcRenderer.send("open-entry-window", content),
+  showNotification: (title, body) => ipcRenderer.invoke('show-notification', title, body),
+});
+
+
 // ctrl + shift + i opens dev tools on electron

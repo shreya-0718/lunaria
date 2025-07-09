@@ -39,19 +39,17 @@
             <div id="moon-label" class="moon-label">Loading...</div>
           </div> 
         </h2>
-        <p><strong>Dates:</strong> July 15-18</p>
-        <p><strong>Theme:</strong> Refinement & Momentum</p>
-        <p> Polish your ideas. Revisit unfinished work.</p>
-        <p><strong>Affirmation:</strong><br>“I am capable of balance.”</p>
+        <p><strong>Dates:</strong> <span id="phase-dates">loading dates</span></p>
         <button id="view-cycle">View Full Cycle  ⟳</button>
       </aside>
 
       <section class="journal">
         <h2>Prompt</h2>
-        <p>“What are you refining?”</p>
+        <p>“What are you thinking?”</p>
 
         <h3>Your Entry</h3>
-        <textarea rows="14" cols="60" placeholder="Write your thoughts here..."></textarea>
+        <textarea rows="1" cols="30" placeholder="Write Date Here: YYYY-MM-DD" id="entry-date"></textarea>
+        <textarea rows="14" cols="60" placeholder="Write your thoughts here..." id="entry-text"></textarea>
 
         <div class="buttons">
           <button id="save">Save</button>
@@ -61,22 +59,15 @@
     </div>
   </div>
 
-  <!-- 🌙 Lunar Cycle View -->
-
   <div id="cycle-view" class="hidden">
     <button id="back-to-main">← Back</button>
     <div id="moon-ring">
       <div id="cycle-range" class="cycle-center-label"> date range here </div>
-      <div class="mini-moons"></div> <!-- ✅ This must be here -->
-    </div>
-
-    <div id="phase-details" class="hidden">
-      <div class="phase-dates">Phase Dates</div>
+      <div class="mini-moons"></div> 
     </div>
 
     <div class="entry-display">
-      <h2 id="entry-date">Select a day</h2>
-      <textarea id="entry-text" readonly></textarea>
+      <h2 id="entry-date-in">Select a day</h2>
     </div>
   </div>
 
@@ -86,7 +77,7 @@
     <p>
       <div id="date-display" class="footer-date"></div> 
       <div class="side-by-side">
-        <div id="moon-phase">Loading...</div> • "Slow and Steady"
+        <div id="moon-phase">Loading...</div> Moon
       </div>
     </p>
   </footer>

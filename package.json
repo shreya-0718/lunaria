@@ -1,9 +1,14 @@
 {
   "name": "lunaria",
   "version": "1.0.0",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "electron .",
+    "build": "electron-builder",
+    "build-win": "electron-builder --win",
+    "build-mac": "electron-builder --mac",
+    "build-linux": "electron-builder --linux",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,12 +22,39 @@
     "url": "https://github.com/shreya-0718/lunaria/issues"
   },
   "homepage": "https://github.com/shreya-0718/lunaria#readme",
-  "description": "",
   "devDependencies": {
-    "electron": "^37.2.0"
+    "electron": "^37.2.0",
+    "electron-builder": "^26.0.12"
   },
   "dependencies": {
     "lunarphase-js": "^2.0.3",
     "react-draggable": "^4.5.0"
+  },
+  "build": {
+    "appId": "com.shreya.lunaria",
+    "productName": "Lunaria",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "index.js",
+      "index.html",
+      "renderer.js",
+      "preload.js",
+      "style.css",
+      "package.json"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "icon.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "icon.png"
+    }
   }
 }

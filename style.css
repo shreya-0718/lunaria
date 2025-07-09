@@ -1,9 +1,25 @@
 body {
   margin: 0;
+  padding: 0;
   background-color: #0e0e1a;
   color: #f0f0f0;
   font-family: 'Georgia', serif;
-  overflow: hidden;
+  overflow-y: auto;
+}
+
+body[data-theme="new-moon"] {
+  background: #0a0a0a;
+  color: #ccc;
+}
+
+body[data-theme="full-moon"] {
+  background: #f0f0f0;
+  color: #222;
+}
+
+body[data-theme="nebula"] {
+  background: radial-gradient(ellipse at center, #1a0033, #000);
+  color: #e0d7ff;
 }
 
 #intro {
@@ -98,35 +114,11 @@ body {
   }
 }
 
-body[data-theme="new-moon"] {
-  background: #0a0a0a;
-  color: #ccc;
-}
-
-body[data-theme="full-moon"] {
-  background: #f0f0f0;
-  color: #222;
-}
-
-body[data-theme="nebula"] {
-  background: radial-gradient(ellipse at center, #1a0033, #000);
-  color: #e0d7ff;
-}
-
 .theme-option.selected {
   text-decoration: underline;
   text-underline-offset: 4px;
   font-weight: bold;
   color: #fff;
-}
-
-body {
-  font-family: 'Georgia', serif;
-  /* background-color: #0e0e1a; 
-  color: #f0f0f0; */
-  margin: 0;
-  padding: 0;
-  overflow-y: auto;
 }
 
 header, footer {
@@ -152,20 +144,31 @@ header, footer {
   padding: 1rem;
 }
 
+textarea,
+textarea#cycle-entry {
+  background: #111;
+  color: #eee;
+  border: 1px solid #444;
+  padding: 1rem;
+  font-family: monospace;
+  resize: none;
+}
+
 textarea {
   width: 97%;
   background-color: #2a2a3d;
-  color: #fff;
   border: 3px solid #2a2a3d;
-  padding: 1rem;
   font-size: 1rem;
-  resize: vertical;
-  outline: none; /* Optional: removes the default blue outline */
+  outline: none;
 }
 
 textarea:focus {
-  border-color: #1f1f30; /* Change this to any color you like */
+  border-color: #1f1f30;
+}
 
+textarea#cycle-entry {
+  width: 85%;
+  height: 200px;
 }
 
 .buttons {
@@ -191,23 +194,21 @@ button:hover {
 
 .side-by-side {
   display: flex;
-  align-items: center; 
+  align-items: center;
   gap: 0.5rem;
-  justify-content: center;/
+  justify-content: center;
 }
-
 
 .sparkle-icon {
   font-size: 2rem;
   animation: glow 2.5s ease-in-out infinite;
-} 
+}
 
 @keyframes glow {
   0%, 100% {
     text-shadow: 0 0 5px #fff, 0 0 10px #ffa500, 0 0 15px #ffa500;
     transform: scale(1);
   }
-
   50% {
     text-shadow: 0 0 10px #fff, 0 0 20px #ffa500, 0 0 30px #ffa500;
     transform: scale(1.1);
@@ -264,69 +265,6 @@ button:hover {
 }
 
 #cycle-view {
-  padding: 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.hidden {
-  display: none;
-}
-
-.cycle-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-textarea#cycle-entry {
-  width: 85%;
-  height: 200px;
-  resize: none;
-  background: #111;
-  color: #eee;
-  border: 1px solid #444;
-  padding: 1rem;
-  font-family: monospace;
-}
-
-#cycle-view {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 9999;
-  background: #1a1a2e;
-  display: none; /* hidden by default */
-  padding: 2rem;
-  overflow-y: auto;
-}
-
-#cycle-view.active {
-  display: block;
-}
-
-#main-app {
-  display: block;
-}
-
-#main-app.hidden {
-  display: none;
-}
-
-#main-app, #cycle-view {
-  transition: opacity 0.4s ease;
-}
-
-#cycle-date {
-  margin-right: 20px;
-}
-
-/* moon phases section */
-/* 🌕 Cycle View Container */
-#cycle-view {
   position: fixed;
   top: 0;
   left: 0;
@@ -339,12 +277,36 @@ textarea#cycle-entry {
   padding: 2rem;
   box-sizing: border-box;
   overflow-y: auto;
+  transition: opacity 0.4s ease;
 }
 
 #cycle-view.active {
   display: block;
 }
-/* 🌑 Moon Phase Buttons */
+
+#main-app {
+  display: block;
+  transition: opacity 0.4s ease;
+}
+
+#main-app.hidden {
+  display: none;
+}
+
+.hidden {
+  display: none;
+}
+
+.cycle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#cycle-date {
+  margin-right: 20px;
+}
+
 .moon-phase {
   position: absolute;
   width: 50px;
@@ -370,7 +332,6 @@ textarea#cycle-entry {
   box-shadow: 0 0 15px 5px gold;
 }
 
-/* 🌘 Mini Moons */
 #moon-ring {
   position: relative;
   width: 400px;
@@ -394,11 +355,13 @@ textarea#cycle-entry {
   position: absolute;
   width: 30px;
   height: 30px;
-  background: #444;
   border-radius: 50%;
+  background: #222;
   border: 1px solid #aaa;
   transform: translate(-50%, -50%);
+  pointer-events: auto;
   z-index: 10;
+  animation: moonBloom 0.4s ease-out forwards;
 }
 
 .mini-moon.glow {
@@ -410,22 +373,37 @@ textarea#cycle-entry {
   transform: scale(1.1);
 }
 
-/* 📅 Phase Dates */
+@keyframes moonBloom {
+  from {
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
 .phase-dates {
   color: #aaa;
   font-size: 0.9rem;
   margin-bottom: 1rem;
 }
 
-/* 📖 Entry Display */
 .entry-display {
   text-align: center;
   margin-top: 2rem;
 }
 
 #entry-date {
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+#entry-date-in {
   font-size: 1.2rem;
   margin-bottom: 0.5rem;
+  margin-top: 1rem;
 }
 
 #entry-text {
@@ -449,29 +427,4 @@ textarea#cycle-entry {
   font-size: 1rem;
   text-align: center;
   pointer-events: none;
-}
-
-.mini-moon {
-  position: absolute;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: #222;
-  border: 1px solid #aaa;
-  transform: translate(-50%, -50%);
-}
-
-@keyframes moonBloom {
-  from {
-    transform: translate(-50%, -50%) scale(0.5);
-    opacity: 0;
-  }
-  to {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 1;
-  }
-}
-
-.mini-moon {
-  animation: moonBloom 0.4s ease-out forwards;
 }
