@@ -222,8 +222,13 @@ function groupByPhase(days) {
 }
 
 function renderMoonRing(phases) {
+  console.log("🌑 Rendering moon ring");
+console.log("Does .mini-moons exist?", !!document.querySelector('#moon-ring .mini-moons'));
+
   const ring = document.getElementById('moon-ring');
+  const miniMoons = ring.querySelector('.mini-moons');
   ring.innerHTML = '';
+  ring.appendChild(miniMoons);
 
   const centerLabel = document.createElement('div');
   centerLabel.id = 'cycle-range';
@@ -250,7 +255,15 @@ function renderMoonRing(phases) {
       moon.classList.add('current');
     }
 
-    moon.onclick = () => showPhaseDetails(phase, x + 25, y + 25, angle);
+    moon.onclick = () => {
+      const rect = moon.getBoundingClientRect();
+      const ringRect = document.getElementById('moon-ring').getBoundingClientRect();
+
+      const centerX = rect.left - ringRect.left + rect.width / 2;
+      const centerY = rect.top - ringRect.top + rect.height / 2;
+
+      showPhaseDetails(phase, centerX, centerY, angle);
+    };
     ring.appendChild(moon);
 
     const label = document.createElement('div');
@@ -268,22 +281,36 @@ function renderMoonRing(phases) {
 }
 
 function showPhaseDetails(phase, originX, originY, angleFromCenter) {
-  const container = document.querySelector('.mini-moons');
+  
+  const container = document.querySelector('#moon-ring .mini-moons');
+
+  if (!container) {
+    console.error("❌ .mini-moons not found inside #moon-ring");
+    return;
+  }
+
+  
+  console.log("🌙 Showing phase details");
+  console.log("Origin:", originX, originY);
+  console.log("Phase:", phase.name, phase.days.length);
+
   container.innerHTML = '';
   container.style.position = 'absolute';
   container.style.left = '0';
   container.style.top = '0';
 
   const radius = 80;
-  const baseAngle = angleFromCenter; // angle from center to clicked moon
+  const spread = Math.PI; // 180° arc
 
   phase.days.forEach((day, i, arr) => {
-    const spread = Math.PI; // 180° arc
-    const offset = spread * (i / (arr.length - 1)) - spread / 2;
-    const angle = baseAngle + offset;
 
-    const x = originX + radius * Math.cos(angle) ;
-    const y = originY + radius * Math.sin(angle) ;
+    const offset = spread * (i / (arr.length - 1)) - spread / 2;
+    const angle = angleFromCenter + offset;
+
+    const x = originX + radius * Math.cos(angle);
+    const y = originY + radius * Math.sin(angle);
+
+    console.log(`Mini moon ${i}:`, x, y);
 
     const mini = document.createElement('div');
     mini.className = 'mini-moon';
@@ -296,7 +323,6 @@ function showPhaseDetails(phase, originX, originY, angleFromCenter) {
       document.getElementById('entry-date').textContent = day.date;
       document.getElementById('entry-text').value = day.entry || "(no entry)";
     };
-
     container.appendChild(mini);
   });
 
@@ -308,3 +334,4 @@ function isToday(dateStr) {
   const today = new Date().toISOString().split('T')[0];
   return dateStr === today;
 }
+
