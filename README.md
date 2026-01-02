@@ -6,10 +6,6 @@ To make Lunaria, I used:
 - Electron for the desktop app
 - HTML, CSS, and JavaScript
 
-## Why Lunaria?
-I like the moon, I would like to get into writing. Then this awesome YSWS (shoutout Rewind) dropped, and I wanted to make a desktop app. Viola, Lunaria!
-
-
 ## Struggles, and struggles, and learning
 One of the biggest things for me was getting the app to feel as mystical as I wanted it to feel. I played with color schemes until I found one I liked, and I think purple and gold (what I eventually landed on) is exactly my vibe. That being said, it wasn't always easy. Making the moon circle took ages, as did aligning the mini moons around them when clicked. I learned a lot about JS functions, animations with CSS, and so much more. Another thing was, I hadn't added my gitignore when I tried to commit, so when I tried to I got an error that my file was too big. Eventually, I just had to clear my past commit history and start fresh. But hey, I won't forget to add .gitignore again 😅
 
